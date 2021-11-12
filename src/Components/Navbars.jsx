@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 
 const Navbars = () => {
-    const {loginWithRedirect, isAuthenticated, user, logout}=useAuth0();
+    const {loginWithRedirect, isAuthenticated, user, logout, getAccessTokenSilently}=useAuth0();
     const [textButton, setTextButton] = useState('Login')
     const [Name, setName] = useState('')
 
@@ -17,14 +17,23 @@ const Navbars = () => {
         setTextButton('Login  ')
         setName('')
       }
-     
     }, [isAuthenticated])
+
+    useEffect(() =>{
+      const getToken=async ()=>{
+        const accesToken = await getAccessTokenSilently();
+        localStorage.setItem('token', accesToken)
+      }
+      if(isAuthenticated){
+        getToken();
+      }      
+    }, [isAuthenticated, getAccessTokenSilently])
 
     return (
         <Navbar bg="light" expand="lg">
   <Container>
       
-    <Navbar.Brand href="#home"><img className="Logo" src="https://images.vexels.com/media/users/3/129185/isolated/preview/cc468878901621ce6e2ecc143815653e-grafico-circular-de-4-partes-con-iconos.png" alt="Logo" /></Navbar.Brand>
+    <Navbar.Brand href="Logo"><img className="Logo" src="https://images.vexels.com/media/users/3/129185/isolated/preview/cc468878901621ce6e2ecc143815653e-grafico-circular-de-4-partes-con-iconos.png" alt="Logo" /></Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="me-auto">
